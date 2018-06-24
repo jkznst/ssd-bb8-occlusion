@@ -50,7 +50,7 @@ class TrainingTargets(mx.operator.CustomOp):
         anchors_in_use_transformed = mx.nd.concat(centerx, centery, width, height, dim=2)   # batchsize x num_anchors x 4
 
         bb8_target = mx.nd.zeros_like(data=bb8_mask)    # batchsize x num_anchors x 16
-        bb8_label = mx.nd.slice_axis(data=labels, axis=2, begin=8, end=24)
+        bb8_label = mx.nd.slice_axis(data=labels, axis=2, begin=8, end=24)  # batchsize x 8 x 16
 
         # calculate targets for OCCLUSION dataset
         for cid in range(1, 9):
@@ -62,6 +62,7 @@ class TrainingTargets(mx.operator.CustomOp):
                                                         y=mx.nd.zeros_like(anchors_in_use_transformed))
             cid_label_mask = (mx.nd.slice_axis(data=labels, axis=2, begin=0, end=1) == cid - 1)
             cid_bb8_label = mx.nd.broadcast_mul(lhs=cid_label_mask, rhs=bb8_label)
+            # TODO: currently only support single instance per class, and clip by 0
             cid_bb8_label = mx.nd.max(cid_bb8_label, axis=1, keepdims=True) # batchsize x 1 x 16
 
             # substract center
