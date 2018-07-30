@@ -123,7 +123,7 @@ def get_config(network, data_shape, **kwargs):
         num_filters = [-1, -1, -1, 512, 256, 256]
         strides = [-1, -1, -1, 2, 2, 2]
         pads = [-1, -1, -1, 1, 1, 1]
-        sizes = get_scales(min_scale=0.2, max_scale=0.9, num_layers=len(from_layers))
+        sizes = get_scales(min_scale=0.1, max_scale=0.7, num_layers=len(from_layers))
         ratios = [[1,2,.5], [1,2,.5], [1,2,.5,3,1./3], [1,2,.5,3,1./3], [1,2,.5,3,1./3], \
             [1,2,.5]]
         normalizations = -1
